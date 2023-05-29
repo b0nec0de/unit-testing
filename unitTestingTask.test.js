@@ -44,6 +44,25 @@ describe('unitTestingTask', () => {
         expect(offsetMinutes).toBeLessThanOrEqual(59);
     });
 
+    //an example of parameterized test case
+    const date = new Date(2023, 4, 17);
+    it.each([
+        [['YYYY', date], '2023'],
+        [['YY', date], '23'],
+        [['MMMM', date], 'May'],
+        [['MMM', date], 'May'],
+        [['MM', date], '05'],
+        [['M', date], '5'],
+        [['dd', date], '17'],
+        [['d', date], '17'],
+    ])(
+        'should format date with two-digit %p expecting %p',
+        (period, result) => {
+            const format = period[0];
+            expect(unitTestingTask(format, date)).toBe(result);
+        }
+    );
+
     test('should format date with day of the week', () => {
         const date = new Date(2023, 4, 17);
         expect(unitTestingTask('DDD', date)).toBe('Wednesday');
