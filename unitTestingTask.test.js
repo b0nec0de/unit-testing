@@ -28,9 +28,20 @@ describe('unitTestingTask', () => {
 
     test('should format date with timezone offset', () => {
         const date = new Date(2023, 4, 17);
-        expect(unitTestingTask('YYYY-MM-dd HH:mm:ss Z', date)).toMatch(
-            /^2023-05-17 00:00:00 [+-]\d{2}:\d{2}$/
-        );
+        const formattedDate = unitTestingTask('YYYY-MM-dd HH:mm:ss Z', date);
+        const regexPattern = /^2023-05-17 00:00:00 ([+-]\d{2}):(\d{2})$/;
+        const match = formattedDate.match(regexPattern);
+
+        expect(match).not.toBeNull();
+
+        const offsetHours = parseInt(match[1], 10);
+        const offsetMinutes = parseInt(match[2], 10);
+
+        expect(offsetHours).toBeGreaterThanOrEqual(-12);
+        expect(offsetHours).toBeLessThanOrEqual(12);
+
+        expect(offsetMinutes).toBeGreaterThanOrEqual(0);
+        expect(offsetMinutes).toBeLessThanOrEqual(59);
     });
 
     test('should format date with day of the week', () => {
@@ -73,19 +84,9 @@ describe('unitTestingTask', () => {
         expect(unitTestingTask('dd', date)).toBe('17');
     });
 
-    test('should format date with single-digit hour', () => {
-        const date = new Date(2023, 4, 17, 5);
-        expect(unitTestingTask('H', date)).toBe('5');
-    });
-
     test('should format date with two-digit hour', () => {
         const date = new Date(2023, 4, 17, 15);
         expect(unitTestingTask('HH', date)).toBe('15');
-    });
-
-    test('should format date with single-digit minute', () => {
-        const date = new Date(2023, 4, 17, 15, 5);
-        expect(unitTestingTask('m', date)).toBe('5');
     });
 
     test('should format date with two-digit minute', () => {
@@ -93,14 +94,24 @@ describe('unitTestingTask', () => {
         expect(unitTestingTask('mm', date)).toBe('15');
     });
 
-    test('should format date with single-digit second', () => {
-        const date = new Date(2023, 4, 17, 15, 30, 5);
-        expect(unitTestingTask('s', date)).toBe('5');
-    });
-
     test('should format date with two-digit second', () => {
         const date = new Date(2023, 4, 17, 15, 30, 15);
         expect(unitTestingTask('ss', date)).toBe('15');
+    });
+
+    test('should format date with single-digit hour', () => {
+        const date = new Date(2023, 4, 17, 5);
+        expect(unitTestingTask('H', date)).toBe('5');
+    });
+
+    test('should format date with single-digit minute', () => {
+        const date = new Date(2023, 4, 17, 15, 5);
+        expect(unitTestingTask('m', date)).toBe('5');
+    });
+
+    test('should format date with single-digit second', () => {
+        const date = new Date(2023, 4, 17, 15, 30, 5);
+        expect(unitTestingTask('s', date)).toBe('5');
     });
 
     test('should format date with lowercase meridiem (am/pm)', () => {
@@ -114,13 +125,6 @@ describe('unitTestingTask', () => {
         const date = new Date(2023, 4, 17, 15, 30, 0, 123);
         expect(unitTestingTask('YYYY-M-d H:m:s.f', date)).toBe(
             '2023-5-17 15:30:0.123'
-        );
-    });
-
-    test('should format date with timezone offset and colon-separated', () => {
-        const date = new Date(2023, 4, 17);
-        expect(unitTestingTask('YYYY-MM-dd HH:mm:ss Z', date)).toMatch(
-            /^2023-05-17 00:00:00 [+-]\d{2}:\d{2}$/
         );
     });
 
