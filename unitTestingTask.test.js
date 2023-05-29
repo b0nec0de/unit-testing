@@ -1,24 +1,6 @@
 const unitTestingTask = require('./unitTestingTask');
 
 describe('unitTestingTask', () => {
-    describe('leadingZeroes', () => {
-        test('should pad single-digit number with leading zero', () => {
-            expect(unitTestingTask.leadingZeroes(5)).toBe('05');
-        });
-
-        test('should not pad double-digit number', () => {
-            expect(unitTestingTask.leadingZeroes(15)).toBe('15');
-        });
-
-        test('should pad number with specified length', () => {
-            expect(unitTestingTask.leadingZeroes(5, 4)).toBe('0005');
-        });
-
-        test('should return string as is if longer than specified length', () => {
-            expect(unitTestingTask.leadingZeroes('12345', 3)).toBe('12345');
-        });
-    });
-
     describe('format', () => {
         test('should format date in default format', () => {
             const date = new Date(2023, 4, 17, 15, 30, 0);

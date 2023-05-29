@@ -34,8 +34,6 @@
         return str;
     }
 
-    unitTestingTask.leadingZeroes = leadingZeroes;
-
     var hasModule = !!(typeof module !== 'undefined' && module.exports);
 
     var tokens = {
